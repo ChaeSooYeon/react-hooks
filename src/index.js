@@ -2,52 +2,25 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 
+const useInput = (initinalValue) => {
+  const [value, setValue] = useState(initinalValue);
+  const onChange = (event) => {
+    console.log(event.target);
+  };
+  return { value, onChange };
+};
+
 const App = () => {
-  //  const onlyitem = useState(1)[0];
-  const [item, setItem] = useState(0);
-  const incrementItem = () => setItem(item + 1);
-  const decrementItem = () => setItem(item - 1);
+  const name = useInput("Ms.");
   return (
     <div className="App">
-      <h1>Hello {item}</h1>
-      <button onClick={incrementItem}>Increment</button>
-      <button onClick={decrementItem}>Decrement</button>
+      <h1>Hello</h1>
+      {/* {...name : 스프레드 연산자} */}
+      {/* value={name.value} onChange.{name.onChange} 은 {...name}과 같은 의미다 */}
+      <input placeholder="Name" {...name} />
     </div>
   );
 };
-
-class AppUgly extends React.Component {
-  state = {
-    item: 0
-  };
-
-  render() {
-    const { item } = this.state;
-    return (
-      <div className="App">
-        <h1>Hello {item}</h1>
-        <button onClick={this.incrementItem}>Increment</button>
-        <button onClick={this.decrementItem}>Decrement</button>
-      </div>
-    );
-  }
-
-  incrementItem = () => {
-    this.setState((state) => {
-      return {
-        item: state.item + 1
-      };
-    });
-  };
-
-  decrementItem = () => {
-    this.setState((state) => {
-      return {
-        item: state.item - 1
-      };
-    });
-  };
-}
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
