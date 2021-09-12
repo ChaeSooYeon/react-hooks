@@ -2,21 +2,29 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 
-const useInput = (initinalValue) => {
+const useInput = (initinalValue, validator) => {
   const [value, setValue] = useState(initinalValue);
   const onChange = (event) => {
-    console.log(event.target);
+    const {
+      target: { value }
+    } = event;
+    let willUpdate = true;
+    if (typeof validator === "function") {
+      willUpdate = validator(value);
+    }
+    if (willUpdate) {
+      setValue(value);
+    }
   };
   return { value, onChange };
 };
 
 const App = () => {
-  const name = useInput("Ms.");
+  const maxLen = (value) => !value.includes("@"); //value.length <= 10;
+  const name = useInput("Ms.", maxLen);
   return (
     <div className="App">
       <h1>Hello</h1>
-      {/* {...name : 스프레드 연산자} */}
-      {/* value={name.value} onChange.{name.onChange} 은 {...name}과 같은 의미다 */}
       <input placeholder="Name" {...name} />
     </div>
   );
